@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FarmerEats App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/db0d5b85be5390f2f137c4fbf370b527?family=Lumberjack+Rough" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Base Variables & Reset */
+        :root {
+            --primary-orange: #D9735A;
+            --primary-green: #5EA25F;
+            --primary-yellow: #F8C569;
+            --text-dark: #261C12;
+            --text-gray: #8F8F8F;
+            --bg-gray: #F5F5F5;
+            --input-bg: #EEEDEC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #5EA25F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Mobile Device Mockup Container */
+        #app-container {
+            width: 100%;
+            max-width: 414px; /* iPhone Max width */
+            height: 100%;
+            max-height: 896px;
+            background-color: #5EA25F;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @media (min-width: 415px) {
+            #app-container {
+                height: 90vh;
+                border-radius: 40px;
+                border: 8px solid #333;
+            }
+        }
+
+
+/* ================= ULTRA CENTER SPLASH ================= */
+
+#screen-splash {
+    position: absolute;
+    inset: 0;
+    background: #5EA25F;
+
+    display: grid;
+    place-items: center;   /* TRUE CENTER */
+}
+
+/* Logo + Text Block */
+.splash-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;   /* Very tight gap */
+}
+
+/* BIGGER LOGO */
+.splash-logo {
+    width: 82vw;
+    max-width: 360px;
+    height: auto;
+
+    animation: logoPop 0.9s ease-out forwards;
+}
+
+.splash-text {
+    font-family: "Lumberjack Rough", serif;
+
+    font-size: 36px;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #ffffff;
+
+    /* Subtle Premium Depth */
+    text-shadow: 
+        0 3px 8px rgba(0,0,0,0.25);
+
+    animation: textFade 1.1s ease forwards;
+}
+
+/* Animations */
+@keyframes logoPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes textFade {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+       .screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #FFFFFF;
+    display: none;
+
+    flex-direction: column;   /* IMPORTANT: restore */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+        .screen.active {
+    display: flex;
+}
+
+#screen-splash.screen.active {
+    display: grid !important;
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography & Spacing */
+        .content-padding {
+    padding: 30px 20px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+        .header-brand { font-size: 16px; font-weight: 500; margin-bottom: 30px; color: var(--text-dark); display: flex; align-items: center;}
+        .page-title { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: var(--text-dark); }
+        .subtitle { font-size: 14px; color: var(--text-gray); margin-bottom: 30px; line-height: 1.5; }
+        .link-colored { color: var(--primary-orange); cursor: pointer; font-weight: 500; text-decoration: none; }
+        .step-text { color: var(--text-gray); font-size: 14px; margin-bottom: 5px; }
+        .text-center { text-align: center; }
+
+        /* Top Bar & Back Button */
+        .top-bar { display: flex; align-items: center; margin-bottom: 30px; }
+        .back-btn { font-size: 24px; color: var(--text-dark); cursor: pointer; padding-right: 15px; }
+
+        /* Inputs */
+        .input-group {
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            margin-bottom: 15px;
+            height: 50px;
+            position: relative;
+        }
+
+        .input-group .icon {
+    margin-right: 10px;
+    color: var(--text-dark);
+    width: 18px;
+    height: 18px;
+}
+
+
+.social-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+.camera-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+
+.back-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+
+.success-icon svg {
+    width: 80px;
+    height: 80px;
+    stroke: var(--primary-green);
+}
+        .input-group input, .input-group select {
+            border: none;
+            background: transparent;
+            width: 100%;
+            height: 100%;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+        
+        .row-inputs { display: flex; gap: 10px; }
+        .row-inputs .input-group { flex: 1; }
+        .forgot-link { position: absolute; right: 15px; color: var(--primary-orange); font-size: 14px; cursor: pointer; font-weight: 500; }
+
+        /* Buttons */
+        .btn-primary {
+    background-color: var(--primary-orange);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    width: 100%;
+    height: 52px;          /* Fixed same height */
+    min-height: 52px;      /* Extra safety */
+    font-size: 16px;
+    font-weight: 600;      /* Consistent bold */
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.3px; /* Text thickness visually same karega */
+}
+
+.btn-primary:active {
+    transform: scale(0.97); /* Press effect */
+    opacity: 0.9;
+}
+        .btn-secondary { background-color: var(--input-bg); color: var(--text-dark); }
+        .mt-20 { margin-top: 20px; }
+        .mt-auto { margin-top: auto; }
+        .mb-20 { margin-bottom: 20px; }
+
+        /* Social Buttons */
+        .or-text { text-align: center; color: var(--text-gray); font-size: 12px; margin: 25px 0; }
+        .social-login { display: flex; justify-content: space-between; gap: 15px; }
+        .social-btn {
+    flex: 1;
+    height: 60px;
+    border: 1px solid #EAEAEA;
+    background: transparent; /* No background */
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+        /* Onboarding */
+        .onboarding-visual {
+    height: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background 0.5s ease;
+}
+        .onboarding-sheet {
+            background: white;
+            height: 50%;
+            border-radius: 40px 40px 0 0;
+            margin-top: -40px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .onboarding-sheet h3 { font-size: 24px; margin-bottom: 15px; font-weight: 700; }
+        .onboarding-sheet p { color: var(--text-dark); font-size: 13px; line-height: 1.6; margin-bottom: 30px; }
+        .dots { display: flex; gap: 8px; margin-bottom: 30px; }
+        .dot { width: 8px; height: 8px; background: var(--input-bg); border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--text-dark); width: 20px; border-radius: 4px; }
+        .login-link { margin-top: 20px; font-size: 15px; cursor: pointer; color: var(--text-dark); text-decoration: underline; font-weight: 500;}
+
+        /* OTP Inputs */
+        .otp-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
+        .otp-input {
+            width: 100%;
+            height: 60px;
+            background: var(--input-bg);
+            border-radius: 10px;
+            border: none;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            outline: none;
+        }
+        .otp-input:focus { border: 2px solid var(--primary-orange); background: white; }
+        .resend-link { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-dark); text-decoration: underline; cursor: pointer; }
+
+        /* Business Hours */
+        .days-row { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .day-pill {
+            width: 40px; height: 40px; border-radius: 8px; background: white; border: 1px solid var(--input-bg);
+            display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-gray);
+        }
+        .day-pill.active { background: var(--primary-orange); color: white; border: none; }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .time-slot {
+            background: var(--input-bg); border-radius: 8px; height: 45px; display: flex; justify-content: center; align-items: center;
+            font-size: 13px; cursor: pointer; color: var(--text-dark); border: 1px solid transparent;
+        }
+        .time-slot.selected { background: var(--primary-yellow); font-weight: 500; }
+
+        /* File Upload */
+        .upload-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+        .camera-btn { width: 50px; height: 50px; background: var(--primary-orange); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; cursor: pointer; box-shadow: 0 4px 10px rgba(217, 115, 90, 0.3);}
+        .file-item { background: var(--input-bg); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin-bottom: 20px; }
+        .close-icon { cursor: pointer; font-weight: bold; }
+
+        /* Footer Actions (Signup) */
+        .footer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding-bottom: 20px; }
+        .w-half { width: 60%; }
+
+        /* Success Screen */
+        .success-icon { font-size: 80px; color: var(--primary-green); margin: 60px 0 30px; }
+
+        /* Toast Message */
+        #toast {
+            position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 12px 24px; border-radius: 25px;
+            font-size: 14px; transition: bottom 0.3s; z-index: 100; white-space: nowrap;
+        }
+        #toast.show { bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+
+
+<!-- ================= SPLASH SCREEN ================= -->
+<div id="screen-splash" class="screen active">
+    <div class="splash-container">
+        <img src="logo.png" class="splash-logo">
+        <h1 class="splash-text">FarmerEats</h1>
+    </div>
+</div>
+
+        
+        <!-- ================= ONBOARDING SCREEN ================= -->
+        <div id="screen-onboarding" class="screen">
+            <div class="onboarding-visual" id="onboard-bg" style="background-color: var(--primary-green);">
+                
+            </div>
+            <div class="onboarding-sheet">
+                <h3 id="onboard-title">Quality</h3>
+                <p id="onboard-text">Sell your farm fresh products directly to consumers, cutting out the middleman and reducing emissions of the global supply chain.</p>
+                <div class="dots" id="onboard-dots">
+                    <span class="dot active" onclick="setOnboarding(0)"></span>
+                    <span class="dot" onclick="setOnboarding(1)"></span>
+                    <span class="dot" onclick="setOnboarding(2)"></span>
+                </div>
+                <button class="btn-primary" style="background-color: var(--primary-green);" id="onboard-btn" onclick="nav('screen-login')">Join the movement!</button>
+                <span class="login-link" onclick="nav('screen-login')">Login</span>
+            </div>
+        </div>
+
+        <!-- ================= LOGIN SCREEN ================= -->
+        <div id="screen-login" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <h1 class="page-title">Welcome back!</h1>
+                <p class="subtitle">New here? <span class="link-colored" onclick="nav('screen-signup-1')">Create account</span></p>
+
+                <form id="form-login" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <i data-lucide="mail" class="icon"></i>
+                        <input type="email" id="login-email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <i data-lucide="lock" class="icon"></i>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <span class="forgot-link" onclick="nav('screen-forgot')">Forgot?</span>
+                    </div>
+                    <button type="submit" class="btn-primary mt-20" id="btn-login">Login</button>
+                </form>
+
+                <p class="or-text">or login with</p>
+                <div class="social-login">
+    
+    <div class="social-btn" onclick="socialLogin('google')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="social-icon">
+    </div>
+
+    <div class="social-btn" onclick="socialLogin('apple')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="social-icon">
+    </div>
+
+    <div class="social-btn" onclick="socialLogin('facebook')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" class="social-icon">
+    </div>
+
+</div>
+            </div>
+        </div>
+
+        <!-- ================= SIGNUP 1: WELCOME ================= -->
+        <div id="screen-signup-1" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <p class="step-text">Signup 1 of 4</p>
+                <h1 class="page-title">Welcome!</h1>
+                
+                <div class="social-login mb-20">
+                    <div class="social-btn" onclick="socialLogin('google')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="social-icon">
+    </div>
+                    <div class="social-btn" onclick="socialLogin('apple')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="social-icon">
+    </div>
+                    <div class="social-btn" onclick="socialLogin('facebook')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" class="social-icon">
+    </div>
+                </div>
+                <p class="or-text">or signup with</p>
+
+                <form onsubmit="nav('screen-signup-2', event)">
+                    <div class="input-group">
+    <i data-lucide="user" class="icon"></i>
+    <input type="text" id="reg-name" placeholder="Full Name" required>
+</div>
+
+<div class="input-group">
+    <i data-lucide="mail" class="icon"></i>
+    <input type="email" id="reg-email" placeholder="Email Address" required>
+</div>
+
+<div class="input-group">
+    <i data-lucide="phone" class="icon"></i>
+    <input type="tel" id="reg-phone" placeholder="Phone Number" required>
+</div>
+
+<div class="input-group">
+    <i data-lucide="lock" class="icon"></i>
+    <input type="password" id="reg-password" placeholder="Password" required>
+</div>
+
+<div class="input-group">
+    <i data-lucide="lock" class="icon"></i>
+    <input type="password" id="reg-confirm-password" placeholder="Re-enter Password" required>
+</div>
+                    
+                    <div class="footer-actions">
+                        <span class="login-link" style="margin-top:0;" onclick="nav('screen-login')">Login</span>
+                        <button type="submit" class="btn-primary w-half">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= SIGNUP 2: FARM INFO ================= -->
+        <div id="screen-signup-2" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <p class="step-text">Signup 2 of 4</p>
+                <h1 class="page-title">Farm Info</h1>
+                
+                <form onsubmit="nav('screen-signup-3', event)" class="mt-20">
+                    <div class="input-group"><i data-lucide="tag" class="icon"></i><input type="text" placeholder="Business Name" required></div>
+                    <div class="input-group"><i data-lucide="smile" class="icon"></i><input type="text" placeholder="Informal Name"></div>
+                    <div class="input-group"><i data-lucide="home" class="icon"></i><input type="text" placeholder="Street Address" required></div>
+                    <div class="input-group"><i data-lucide="map-pin" class="icon"></i><input type="text" placeholder="City" required></div>
+                    
+                    <div class="row-inputs">
+                        <div class="input-group">
+                            <select required>
+                                <option value="" disabled selected>State</option>
+                                <option value="NY">New York</option>
+                                <option value="CA">California</option>
+                                <option value="TX">Texas</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" placeholder="Enter Zipcode" required>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-actions mt-auto">
+                        <span class="back-btn" onclick="nav('screen-signup-1')"><i data-lucide="arrow-left"></i></span>
+                        <button type="submit" class="btn-primary w-half">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= SIGNUP 3: VERIFICATION ================= -->
+        <div id="screen-signup-3" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <p class="step-text">Signup 3 of 4</p>
+                <h1 class="page-title">Verification</h1>
+                <p class="subtitle mb-20">Attached proof of Department of Agriculture registrations i.e. Florida Fresh, USDA Approved, USDA Organic</p>
+                
+                <div class="upload-area">
+                    <span style="font-size: 14px; color: var(--text-dark);">Attach proof of registration</span>
+                    <div class="camera-btn" onclick="toggleFile()"><i data-lucide="camera"></i></div>
+                </div>
+
+                <div class="file-item" id="mock-file" style="display: none;">
+                    <span>usda_registration.pdf</span>
+                    <span class="close-icon" onclick="toggleFile()"><i data-lucide="x"></i></span>
+                </div>
+                
+                <div class="footer-actions" style="margin-top: 150px;">
+                    <span class="back-btn" onclick="nav('screen-signup-2')"><i data-lucide="arrow-left"></i></span>
+                    <button class="btn-primary w-half" onclick="nav('screen-signup-4')">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SIGNUP 4: BUSINESS HOURS ================= -->
+        <div id="screen-signup-4" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <p class="step-text">Signup 4 of 4</p>
+                <h1 class="page-title">Business Hours</h1>
+                <p class="subtitle mb-20">Choose the hours your farm is open for pickups. This will allow customers to order deliveries.</p>
+                
+                <div class="days-row">
+                    <div class="day-pill" onclick="this.classList.toggle('active')">M</div>
+                    <div class="day-pill" onclick="this.classList.toggle('active')">T</div>
+                    <div class="day-pill active">W</div>
+                    <div class="day-pill" onclick="this.classList.toggle('active')">Th</div>
+                    <div class="day-pill" onclick="this.classList.toggle('active')">F</div>
+                    <div class="day-pill" onclick="this.classList.toggle('active')">S</div>
+                    <div class="day-pill" onclick="this.classList.toggle('active')">Su</div>
+                </div>
+
+                <div class="time-grid">
+                    <div class="time-slot selected" onclick="this.classList.toggle('selected')">8:00am - 10:00am</div>
+                    <div class="time-slot selected" onclick="this.classList.toggle('selected')">10:00am - 1:00pm</div>
+                    <div class="time-slot" onclick="this.classList.toggle('selected')">1:00pm - 4:00pm</div>
+                    <div class="time-slot" onclick="this.classList.toggle('selected')">4:00pm - 7:00pm</div>
+                    <div class="time-slot" onclick="this.classList.toggle('selected')">7:00pm - 10:00pm</div>
+                </div>
+                
+                <div class="footer-actions" style="margin-top: 100px;">
+                    <span class="back-btn" onclick="nav('screen-signup-3')"><i data-lucide="arrow-left"></i></span>
+                    <button class="btn-primary w-half" onclick="handleRegister()">Signup</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SUCCESS SCREEN ================= -->
+        <div id="screen-success" class="screen">
+            <div class="content-padding text-center" style="display: flex; flex-direction: column; height: 100%; justify-content: center;">
+                <div class="success-icon"><i data-lucide="check-circle"></i></div>
+                <h1 class="page-title">You're all done!</h1>
+                <p class="subtitle text-center">Hang tight! We are currently reviewing your account and will follow up with you in 2-3 business days. In the meantime, you can setup your inventory.</p>
+                <button class="btn-primary mt-20" onclick="nav('screen-login')" style="margin-top: auto; margin-bottom: 20px;">Got it!</button>
+            </div>
+        </div>
+
+        <!-- ================= FORGOT PASSWORD ================= -->
+        <div id="screen-forgot" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <h1 class="page-title mt-20">Forgot Password?</h1>
+                <p class="subtitle">Remember your password? <span class="link-colored" onclick="nav('screen-login')">Login</span></p>
+
+                <form onsubmit="handleForgot(event)">
+                    <div class="input-group">
+                        <span class="icon">📞</span>
+                        <input type="tel" id="forgot-phone" placeholder="Phone Number" required>
+                    </div>
+                    <button type="submit" class="btn-primary mt-20">Send Code</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= VERIFY OTP ================= -->
+        <div id="screen-otp" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <h1 class="page-title mt-20">Verify OTP</h1>
+                <p class="subtitle">Remember your password? <span class="link-colored" onclick="nav('screen-login')">Login</span></p>
+
+                <form onsubmit="handleOTP(event)">
+                    <div class="otp-container" id="otp-inputs">
+                        <input type="text" class="otp-input" maxlength="1" required>
+                        <input type="text" class="otp-input" maxlength="1" required>
+                        <input type="text" class="otp-input" maxlength="1" required>
+                        <input type="text" class="otp-input" maxlength="1" required>
+                        <input type="text" class="otp-input" maxlength="1" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Submit</button>
+                    <div class="resend-link" onclick="showMsg('OTP Resent!')">Resend Code</div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= RESET PASSWORD ================= -->
+        <div id="screen-reset" class="screen">
+            <div class="content-padding">
+                <div class="header-brand">FarmerEats</div>
+                <h1 class="page-title mt-20">Reset Password</h1>
+                <p class="subtitle">Remember your password? <span class="link-colored" onclick="nav('screen-login')">Login</span></p>
+
+                <form onsubmit="handleReset(event)">
+                    <div class="input-group"><i data-lucide="lock" class="icon"></i><input type="password" placeholder="New Password" required></div>
+                    <div class="input-group"><i data-lucide="lock" class="icon"></i><input type="password" placeholder="Confirm New Password" required></div>
+                    <button type="submit" class="btn-primary mt-20">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Toast Notification (Custom Alert) -->
+        <div id="toast">Message here</div>
+
+    </div>
+
+    <script>
+        // --- Navigation Logic ---
+        function nav(screenId, event = null) {
+            if(event) event.preventDefault(); // Roke form submit refresh ko
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // --- Toast Message Logic (Alert ki jagah) ---
+        function showMsg(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // --- Onboarding Carousel Logic ---
+        const onboardData = [
+    {
+        color: 'var(--primary-green)',
+        title: 'Quality',
+        text: 'Sell your farm fresh products directly to consumers, cutting out the middleman and reducing emissions of the global supply chain.',
+        image: 'slide1.jpg'
+    },
+    {
+        color: 'var(--primary-orange)',
+        title: 'Convenient',
+        text: 'Our team of delivery drivers will make sure your orders are picked up on time and promptly delivered to your customers.',
+        image: 'slide2.jpg'
+    },
+    {
+        color: 'var(--primary-yellow)',
+        title: 'Local',
+        text: 'We love the earth and know you do too! Join us in reducing our local carbon footprint one order at a time.',
+        image: 'slide3.jpg'
+    }
+];
+
+        function setOnboarding(index) {
+            // Update UI
+            document.getElementById('onboard-bg').style.backgroundImage =
+    `url(${onboardData[index].image})`;
+
+document.getElementById('onboard-bg').style.backgroundSize = "cover";
+document.getElementById('onboard-bg').style.backgroundPosition = "center";
+document.getElementById('onboard-bg').style.backgroundRepeat = "no-repeat";
+            document.getElementById('onboard-bg').style.backgroundColor = onboardData[index].color;
+            
+            document.getElementById('onboard-title').innerText = onboardData[index].title;
+            document.getElementById('onboard-text').innerText = onboardData[index].text;
+            document.getElementById('onboard-btn').style.backgroundColor = onboardData[index].color;
+            
+            // Update Dots
+            const dots = document.getElementById('onboard-dots').children;
+            for(let i=0; i<dots.length; i++) {
+                dots[i].className = i === index ? 'dot active' : 'dot';
+            }
+        }
+
+        // --- Mock File Upload Logic (Signup Step 3) ---
+        function toggleFile() {
+            const fileItem = document.getElementById('mock-file');
+            fileItem.style.display = fileItem.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // --- OTP Input Auto-advance Logic ---
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('keyup', (e) => {
+                if (e.key >= 0 && e.key <= 9 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                } else if (e.key === 'Backspace' && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+
+        // --- API INTEGRATION LOGIC (Mocked/Fetch) ---
+        const API_BASE = 'https://sowlab.com/assignment';
+
+        // 1. Login API
+        async function handleLogin(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+
+    try {
+        const res = await fetch(`${API_BASE}/user/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: email,
+                password: pass,
+                role: "farmer",
+                device_token: "xyz",
+                type: "email",
+                social_id: "xyz"
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            showMsg(data.message || "Invalid credentials");
+            return;
+        }
+
+        showMsg("Login Successful");
+        nav("screen-success");
+
+    } catch (err) {
+        showMsg("Network error");
+    }
+}
+
+
+
+async function socialLogin(provider) {
+
+    showMsg("Connecting to " + provider + "...");
+
+    try {
+        const res = await fetch(`${API_BASE}/user/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: provider + "@social.com",
+                password: "social_login",
+                role: "farmer",
+                device_token: "xyz",
+                type: provider,
+                social_id: "SOCIAL_" + Date.now()
+            })
+        });
+
+        if (!res.ok) {
+            showMsg("Social login failed");
+            return;
+        }
+
+        showMsg("Login Successful");
+        nav("screen-success");
+
+    } catch (err) {
+        showMsg("Network error");
+    }
+}
+
+
+
+
+
+
+
+        // 2. Register API (Called on Step 4 completion)
+        async function handleRegister() {
+            showMsg('Creating Account...');
+            
+            // Dummy Data object (Asli app me steps se gather hoga)
+            const reqBody = {
+    full_name: document.getElementById("reg-name").value,
+    email: document.getElementById("reg-email").value,
+    phone: document.getElementById("reg-phone").value,
+    password: document.getElementById("reg-password").value,
+    role: "farmer",
+    device_token: "xyz",
+    type: "email",
+    social_id: "xyz"
+};
+
+            try {
+                const res = await fetch(`${API_BASE}/user/register`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(reqBody)
+                });
+                const data = await res.json();
+                if(res.ok) nav('screen-success');
+                else showMsg('Registration Failed');
+            } catch(e) {
+    showMsg("Network error");
+}
+        }
+
+        // 3. Forgot Password API
+        async function handleForgot(e) {
+            e.preventDefault();
+            const phone = document.getElementById('forgot-phone').value;
+            showMsg('Sending OTP...');
+            
+            try {
+                await fetch(`${API_BASE}/user/forgot-password`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: phone }) });
+                nav('screen-otp');
+            } catch(e) {
+                nav('screen-otp'); // Demo proceed
+            }
+        }
+
+        // 4. Verify OTP API
+        async function handleOTP(e) {
+    e.preventDefault();
+
+    const otp = [...document.querySelectorAll('.otp-input')]
+                .map(input => input.value)
+                .join('');
+
+    try {
+        const res = await fetch(`${API_BASE}/user/verify-otp`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ otp: otp })
+        });
+
+        if (!res.ok) {
+            showMsg("Invalid OTP");
+            return;
+        }
+
+        nav("screen-reset");
+
+    } catch (err) {
+        showMsg("Network error");
+    }
+}
+
+        // 5. Reset Password API
+        async function handleReset(e) {
+    e.preventDefault();
+
+    const newPass = document.querySelectorAll('#screen-reset input')[0].value;
+
+    try {
+        const res = await fetch(`${API_BASE}/user/reset-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: newPass })
+        });
+
+        if (!res.ok) {
+            showMsg("Reset Failed");
+            return;
+        }
+
+        showMsg("Password Reset Successful");
+        nav("screen-login");
+
+    } catch (err) {
+        showMsg("Network error");
+    }
+}
+lucide.createIcons();
+setOnboarding(0);
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        nav("screen-onboarding");
+    }, 2000);
+});
+
+    </script>
+</body>
+</html>
